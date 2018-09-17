@@ -13,7 +13,7 @@ Online Action RPG
 #### 32bit & 64bit
 
     flatpak-builder --force-clean builds --repo=winepak com.blizzard.Diablo2.yml
-    flatpak --user install winepak com.blizzard.StarCraft2
+    flatpak --user install winepak com.blizzard.Diablo2
 
 ### Direct
 #### 32bit & 64bit
