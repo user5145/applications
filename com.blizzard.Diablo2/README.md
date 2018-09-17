@@ -6,7 +6,7 @@ Online Action RPG
 | Arch  | Installs | Runs | Notes |
 | ----- | -------- | ---- | ----- |
 | 32bit | N/A      | N/A  |       |
-| 64bit | Yes      | Yes  | Runs with no issues; Only campaign was tested, not multiplayer; If crashes during download rerun. |
+| 64bit | Yes      | Yes  | Runs with no issues; Only campaign was tested, not multiplayer; If crashes during download rerun. As a workaround for flatpak/flatpak#713 download Downloader_Diablo2_enUS.exe from battlenet.com manually |
 
 ## Build & Install
 ### Repo
