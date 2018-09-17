@@ -18,7 +18,7 @@ The bestest free-to-win rhythm game
 #### 64bit
 
     flatpak-builder --arch=x86_64 --force-clean builds --repo=winepak sh.ppy.Osu.yml
-    flatpak --user install winepak sh.ppy.Osu.yml
+    flatpak --user install winepak sh.ppy.Osu
 
 ### Direct
 #### 32bit
@@ -31,5 +31,5 @@ The bestest free-to-win rhythm game
 
 ## Run
 
-    flatpak run sh.ppy.Osu.yml
+    flatpak run sh.ppy.Osu
 
