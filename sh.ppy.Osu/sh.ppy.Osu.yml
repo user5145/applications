@@ -1,0 +1,79 @@
+app-id: sh.ppy.Osu
+branch: alfa
+
+runtime: org.winepak.Platform
+runtime-version: 3.0
+sdk: org.winepak.Sdk
+
+command: osu
+
+finish-args:
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --allow=multiarch
+  - --device=all
+  - --share=network
+  - --env=WINEPREFIX=/var/data/win32
+  - --env=WINEARCH=win32
+
+add-extensions:
+  org.winepak.Platform.Compat32:
+    directory: lib/32bit
+    version: 3.0
+    add-ld-path: lib
+    no-autodownload: false
+    
+  org.winepak.Platform.Wine.Compat32:
+    directory: lib/wine-32bit
+    version: 3.8-staging
+    add-ld-path: lib
+    no-autodownload: false
+
+modules:
+  - name: setup-compat32
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/32bit
+      - ln -s /app/lib/32bit/lib/ld-linux.so.2 /app/lib/ld-linux.so.2
+
+  - name: setup-wine-compat32
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/wine-32bit
+
+  - name: osu
+    buildsystem: simple
+    build-commands:
+      - install -d /app/bin
+      - install osu!install.exe /app/bin
+      - install osu /app/bin
+      - install osu-installer /app/bin
+
+    sources:
+      - type: file
+        url: https://m1.ppy.sh/r/osu!install.exe
+        sha256: db0b45baa5aef5ac2870802d26b1fcb0faf28d269dfdf3ba3a8392dabb4d377f
+
+      - type: script
+        dest-filename: osu-installer
+        commands:
+          - mkdir -p /var/data/win32
+          - wineboot
+          - winetricks dotnet40
+          - 
+          - wine /app/bin/osu!install.exe "$@"
+
+      - type: script
+        dest-filename: osu
+        commands:
+          - if ! [ -e "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/osu!.exe" ] ; then
+          - '    source /app/bin/osu-installer'
+          - '    if [[ $? != 0 ]] ; then'
+          - '        echo "Installation failed, abort."'
+          - '        exit 1'
+          - '    fi'
+          - else
+          -      wine "C:/users/$USER/Local Settings/Application Data/osu!/osu!.exe"
+          - fi
+
