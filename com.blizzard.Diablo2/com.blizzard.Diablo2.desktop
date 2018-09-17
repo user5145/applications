@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Diablo II
+Comment=Online RPG Game
+Exec=start %U
+Icon=com.blizzard.Diablo2
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;
+Categories=Game;
+Keywords=Diablo II;Blizzard;Real-time;Strategy;
