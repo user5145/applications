@@ -54,3 +54,19 @@ modules:
           -      wine "C:/users/$USER/Local Settings/Application Data/osu!/osu!.exe"
           - fi
 
+  - name: resources
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 sh.ppy.Osu.svg /app/share/icons/hicolor/512x512/apps/sh.ppy.Osu.svg
+      - install -Dm644 sh.ppy.Osu.appdata.xml /app/share/appdata/sh.ppy.Osu.appdata.xml
+      - install -Dm644 sh.ppy.Osu.desktop /app/share/applications/sh.ppy.Osu.desktop
+
+    sources:
+      - type: file
+        path: sh.ppy.Osu.svg
+
+      - type: file
+        path: sh.ppy.Osu.appdata.xml
+
+      - type: file
+        path: sh.ppy.Osu.desktop
