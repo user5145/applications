@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Osu!
 Comment=The bestest free-to-win rhythm game
-Exec=osu %U
+Exec=start %U
 Icon=sh.ppy.Osu
 StartupNotify=false
 Terminal=false
