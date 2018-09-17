@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Osu!
+Comment=The bestest free-to-win rhythm game
+Exec=osu %U
+Icon=sh.ppy.Osu
+StartupNotify=false
+Terminal=false
+Type=Application
+MimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;
+Categories=Game;
+Keywords=Real-time;Strategy;
