@@ -20,10 +20,6 @@ Online Action RPG
 
     flatpak-builder --user --force-clean --install builds com.blizzard.Diablo2.yml
 
-#### 64bit
-
-    flatpak-builder --user --force-clean --install builds com.blizzard.Diablo2.yml
-
 ## Run
 
     flatpak run com.blizzard.Diablo2
