@@ -1,9 +1,9 @@
 app-id: sh.ppy.Osu
 branch: alfa
 
-runtime: org.winepak.Platform
+runtime: org.winepak.Platform/i386
 runtime-version: 3.0
-sdk: org.winepak.Sdk
+sdk: org.winepak.Sdk/i386
 
 command: osu
 
@@ -16,32 +16,9 @@ finish-args:
   - --share=network
   - --env=WINEPREFIX=/var/data/win32
   - --env=WINEARCH=win32
-
-add-extensions:
-  org.winepak.Platform.Compat32:
-    directory: lib/32bit
-    version: 3.0
-    add-ld-path: lib
-    no-autodownload: false
-    
-  org.winepak.Platform.Wine.Compat32:
-    directory: lib/wine-32bit
-    version: 3.8-staging
-    add-ld-path: lib
-    no-autodownload: false
+  - --env=WINEDEBUG=-all
 
 modules:
-  - name: setup-compat32
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/lib/32bit
-      - ln -s /app/lib/32bit/lib/ld-linux.so.2 /app/lib/ld-linux.so.2
-
-  - name: setup-wine-compat32
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/lib/wine-32bit
-
   - name: osu
     buildsystem: simple
     build-commands:
