@@ -7,7 +7,13 @@ sdk: org.winepak.Sdk/i386
 
 command: start
 
-    
+add-extensions:
+  org.winepak.Platform.Wine/i386:
+    directory: lib/wine-32bit
+    version: 3.9-staging
+    add-ld-path: lib
+    no-autodownload: false
+
 tags:
 - proprietary
 
@@ -25,31 +31,46 @@ finish-args:
   - --env=WINEDEBUG=-all
 
 modules:
+  - name: setup-wine
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/wine-32bit
+
   - name: diablo
     buildsystem: simple
     build-commands:
       - mkdir -p /app/bin
       - install -Dm766 Downloader_Diablo2_enUS.exe /app/bin
+      
 
     sources:
       - type: file
         path: Downloader_Diablo2_enUS.exe
 
 
-  - name: scripts
+  - name: setup
     buildsystem: simple
     build-commands:
       - mkdir -p /app/bin
       - install -Dm766 start /app/bin
       - install -Dm766 installer /app/bin
+      - install -Dm644 glide3x.dll /app/bin
+      - install -Dm644 glide-init.exe /app/bin
 
     sources:
+      - type: archive
+        url: http://www.svenswrapper.de/gl32ogl14e.zip
+        sha256: cd9d3688b35decf0fbd4c97d584577a7628e74aeac808f0a0a52fbcfdd1818c6
+
       - type: script
         dest-filename: installer
         commands:
           - mkdir -p $WINEPREFIX
           - wineboot
           - 
+          - install -d "/var/data/win32/drive_c/Program Files/Diablo II/"
+          - install /app/bin/glide3x.dll "/var/data/win32/drive_c/Program Files/Diablo II/"
+          - install /app/bin/glide-init.exe "/var/data/win32/drive_c/Program Files/Diablo II/"
           - wine /app/bin/Downloader_Diablo2_enUS.exe "$@"
 
       - type: script
@@ -62,7 +83,9 @@ modules:
           - '        exit 1'
           - '    fi'
           - else
-          -      wine "C:/Program Files/Diablo II/Diablo II.exe"
+          -      cd "/var/data/win32/drive_c/Program Files/Diablo II/"
+          -      wine "C:/Program Files/Diablo II/glide-init.exe"
+          -      wine "C:/Program Files/Diablo II/Diablo II.exe" -3dfx
           - fi
 
 
