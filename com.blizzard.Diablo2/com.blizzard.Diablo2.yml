@@ -13,6 +13,7 @@ tags:
 
 finish-args:
   - --socket=x11
+  - --share=ipc
   - --socket=pulseaudio
   - --device=dri
   - --allow=multiarch
@@ -21,6 +22,7 @@ finish-args:
   - --persist=xdg-desktop
   - --env=WINEPREFIX=/var/data/win32
   - --env=WINEARCH=win32
+  - --env=WINEDEBUG=-all
 
 modules:
   - name: diablo
