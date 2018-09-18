@@ -1,9 +1,9 @@
 app-id: com.blizzard.Diablo2
 branch: alfa
 
-runtime: org.winepak.Platform.Compat32
+runtime: org.winepak.Platform/i386
 runtime-version: 3.0
-sdk: org.winepak.Sdk
+sdk: org.winepak.Sdk/i386
 
 command: start
 
