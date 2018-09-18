@@ -6,7 +6,7 @@ The bestest free-to-win rhythm game
 | Arch  | Installs | Runs | Notes |
 | ----- | -------- | ---- | ----- |
 | 32bit | N/A      | N/A  | None  |
-| 64bit | Yes      | Yes  | None  |
+| 64bit | Yes      | No   | None  |
 
 ## Build & Install
 ### Repo
