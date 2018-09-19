@@ -7,13 +7,6 @@ sdk: org.winepak.Sdk/i386
 
 command: start
 
-add-extensions:
-  org.winepak.Platform.Wine/i386:
-    directory: lib/wine-32bit
-    version: 3.9-staging
-    add-ld-path: lib
-    no-autodownload: false
-
 tags:
 - proprietary
 
@@ -31,11 +24,6 @@ finish-args:
   - --env=WINEDEBUG=-all
 
 modules:
-  - name: setup-wine
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/lib/wine-32bit
-
   - name: diablo
     buildsystem: simple
     build-commands:
