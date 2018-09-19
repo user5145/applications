@@ -1,25 +1,11 @@
 app-id: sh.ppy.Osu
 branch: alfa
 
-runtime: org.winepak.Platform
+runtime: org.winepak.Platform/i386
 runtime-version: 3.0
-sdk: org.winepak.Sdk
+sdk: org.winepak.Sdk/i386
 
 command: start
-
-#workaround, wine 3.0.1 doesn't launch osu properly
-add-extensions:
-  org.winepak.Platform.Compat32:
-    directory: lib/32bit
-    version: 3.0
-    add-ld-path: lib
-    no-autodownload: false
-
-  org.winepak.Platform.Wine.Compat32:
-    directory: lib/wine-32bit
-    version: 3.8-staging
-    add-ld-path: lib
-    no-autodownload: false
 
 finish-args:
   - --share=ipc
@@ -32,19 +18,48 @@ finish-args:
   - --env=WINEPREFIX=/var/data/win32
   - --env=WINEARCH=win32
   - --env=WINEDEBUG=-all
+  - --env=PATH=/app/wine/bin:/app/bin:/usr/bin
 
+build-options:
+  cflags: -O2 -fstack-protector-strong
+  cxxflags: -O2 -fstack-protector-strong
+  ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
+  prefix: "/app/wine"
+  env:
+    V: '1'
 
 modules:
-  - name: setup-compat32
+  - name: setup-wine
     buildsystem: simple
     build-commands:
-      - mkdir -p /app/lib/32bit
-      - ln -s /app/lib/32bit/lib/ld-linux.so.2 /app/lib/ld-linux.so.2
+      - mkdir -p /app/wine
 
-  - name: setup-wine-compat32
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/lib/wine-32bit
+
+  - name: wine-staging-win32
+    config-opts:
+      - --disable-win64
+      - --disable-win16
+      - --disable-tests
+      - --with-x
+      - --with-ldap
+      - --with-netapi
+      - --without-cups
+      - --without-curses
+      - --without-capi
+      - --without-glu
+      - --without-gphoto
+      - --without-gsm
+      - --without-hal
+      - --without-opencl
+      - --without-pcap
+      - --without-udev
+    cleanup:
+      - /app/wine/app/wine/share/man
+      - /app/wine/share/applications
+    sources:
+      - type: archive
+        url: https://dl.winehq.org/wine/source/3.0/wine-3.0.3.tar.xz
+        sha256: eb645999ea6f6455a5275bf267e19a32497c8f5aac818ea40afe7c8c396a4da1
 
   - name: osu
     buildsystem: simple
