@@ -72,7 +72,9 @@ modules:
           - mkdir -p /var/data/win32
           - wineboot
           - winetricks dotnet40
+          - winetricks gdiplus
           - 
+          - install -Dm644 /app/discord-rpc.dll "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/discord-rpc.dll"
           - wine /app/bin/osu!install.exe "$@"
 
       - type: script
@@ -95,6 +97,7 @@ modules:
       - install -Dm644 sh.ppy.Osu.svg /app/share/icons/hicolor/512x512/apps/sh.ppy.Osu.svg
       - install -Dm644 sh.ppy.Osu.appdata.xml /app/share/appdata/sh.ppy.Osu.appdata.xml
       - install -Dm644 sh.ppy.Osu.desktop /app/share/applications/sh.ppy.Osu.desktop
+      - install -Dm644 linux-discord-rpc.dll /app/discord-rpc.dll
 
     sources:
       - type: file
@@ -105,3 +108,7 @@ modules:
 
       - type: file
         path: sh.ppy.Osu.desktop
+        
+      - type: file
+        url: https://github.com/goeo-/discord-rpc/releases/download/v3.2.0/linux-discord-rpc.dll
+        sha256: 216bed4c3f79375a6389779b9087ed18d9dae95304362dd21bf9f406cf3e49eb
