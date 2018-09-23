@@ -1,0 +1,35 @@
+build-extension: true
+
+id: com.blizzard.Diablo2.LordofDestruction
+branch: alfa
+
+runtime: com.blizzard.Diablo2//alfa
+sdk: org.winepak.Sdk//3.0
+
+separate-locales: false
+appstream-compose: false
+
+modules:
+  - name: lod
+    buildsystem: simple
+    build-commands:      
+      - install -d ${FLATPAK_DEST}/bin
+      - install Diablo2lod.exe ${FLATPAK_DEST}/bin
+      - install installer ${FLATPAK_DEST}/bin
+    sources:
+      - type: file
+        path: Downloader_Diablo2_Lord_of_Destruction_enUS.exe
+        dest-filename: Diablo2lod.exe
+      - type: script
+        dest-filename: installer
+        commands:
+          - wine $(dirname $0)/Diablo2lod.exe "$@"
+
+
+  - name: metainfo
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 --target-directory=${FLATPAK_DEST}/share/metainfo com.blizzard.Diablo2.LordofDestruction.metainfo.xml
+    sources:
+      - type: file
+        path: com.blizzard.Diablo2.LordofDestruction.metainfo.xml

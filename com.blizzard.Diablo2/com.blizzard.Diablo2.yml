@@ -26,6 +26,7 @@ finish-args:
 add-extensions:
   com.blizzard.Diablo2.LordofDestruction:
     directory: extensions
+    version: alfa
     subdirectories: false
     autodelete: false
     no-autodownload: true
@@ -71,13 +72,27 @@ modules:
       - type: script
         dest-filename: start
         commands:
+          - #install diablo2
           - if ! [ -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II.exe" ] ; then
+          - '    echo "installing Diablo 2"'
           - '    source /app/bin/installer'
           - '    if [[ $? != 0 ]] ; then'
           - '        echo "Installation failed, abort."'
           - '        exit 1'
           - '    fi'
+          -
+          - #install diablo2 lod
+          - elif [ -e /app/extensions/bin/installer ] && [ ! -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II LOD Install Log.html" ] ; then
+          - '         echo "installing Diablo 2 lod"'
+          - '         /app/extensions/bin/installer "$@"'
+          - '         if [[ $? != 0 ]] ; then'
+          - '              echo "Installation failed, abort."'
+          - '              exit 1'
+          - '         fi'
+          -
+          - #launch
           - else
+          - '    echo "launching Diablo 2"'
           -      cd "/var/data/win32/drive_c/Program Files/Diablo II/"
           -      wine "C:/Program Files/Diablo II/glide-init.exe"
           -      wine "C:/Program Files/Diablo II/Diablo II.exe" -3dfx
