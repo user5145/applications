@@ -23,6 +23,13 @@ finish-args:
   - --env=WINEARCH=win32
   - --env=WINEDEBUG=-all
 
+add-extensions:
+  com.blizzard.Diablo2.LordofDestruction:
+    directory: extensions
+    subdirectories: false
+    autodelete: false
+    no-autodownload: true
+
 modules:
   - name: diablo
     buildsystem: simple
@@ -93,3 +100,6 @@ modules:
 
       - type: file
         path: com.blizzard.Diablo2.desktop
+
+    post-install:
+    - mkdir -p /app/extensions
