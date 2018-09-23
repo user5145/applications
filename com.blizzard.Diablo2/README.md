@@ -5,7 +5,7 @@ Online Action RPG
 
 | Arch  | Installs | Runs | Notes |
 | ----- | -------- | ---- | ----- |
-| 32bit | Yes      | Yes  | As a workaround for flatpak/flatpak#713 download Downloader_Diablo2_enUS.exe from battlenet.com and put into com.blizzard.Diablo2; cinematics and multiplayer don't work |
+| 32bit | Yes      | Yes  | As a workaround for flatpak/flatpak#713 download Downloader_Diablo2_enUS.exe from battlenet.com and put into com.blizzard.Diablo2; multiplayer doesn't work |
 
 ## Build & Install
 ### Repo
