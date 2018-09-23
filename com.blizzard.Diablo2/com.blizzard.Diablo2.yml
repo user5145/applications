@@ -92,6 +92,14 @@ modules:
           -
           - #launch
           - else
+          -      # remove old files
+          - '    for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2-1.14b-Installer-*" ; do'
+          - '         rm -R $f'
+          - '    done'
+          - '    for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2LOD-1.14b-Installer-*" ; do'
+          - '         rm -R $f'
+          - '    done'
+          -
           - '    echo "launching Diablo 2"'
           -      cd "/var/data/win32/drive_c/Program Files/Diablo II/"
           -      wine "C:/Program Files/Diablo II/glide-init.exe"
