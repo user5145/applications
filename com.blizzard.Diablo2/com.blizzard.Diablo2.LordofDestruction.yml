@@ -4,7 +4,7 @@ id: com.blizzard.Diablo2.LordofDestruction
 branch: alfa
 
 runtime: com.blizzard.Diablo2//alfa
-sdk: org.winepak.Sdk//3.0
+sdk: org.winepak.Sdk/i386/3.0
 
 separate-locales: false
 appstream-compose: false
