@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>com.blizzard.Diablo2.desktop</id>
+    <metadata_license>CC-BY-SA</metadata_license>
+    <project_license>LicenseRef-proprietary</project_license>
+    <name>Diablo II</name>
+    <summary>Online RPG Game</summary>
+    <description><p>Online RPG Game</p></description>
+    
+    <project_group>winepak</project_group>
+    <developer_name>Blizzard Entertainment</developer_name>
+
+    <url type="homepage">https://battlenet.com</url>
+
+    <categories>
+        <category>Game</category>
+    </categories>
+
+    <recommends>
+        <memory>512</memory>
+    </recommends>
+
+    <releases>
+        <release date="2018-09-17" version="2018.09.17">
+            <description>
+                <ul>
+                    <li>Initial release of Diablo2 II via winepak.</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
+</component>

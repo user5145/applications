@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Heroes of Might and Magic
+Comment=Game
+Exec=start %U
+Icon=com.gog.Heroes-of-Might-and-Magic
+StartupNotify=false
+Terminal=false
+Type=Application
+MimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;
+Categories=Game;
+Keywords=Real-time;Strategy;
