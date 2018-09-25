@@ -14,15 +14,15 @@ modules:
     buildsystem: simple
     build-commands:      
       - install -d ${FLATPAK_DEST}/bin
-      - install -Dm555 glide3x.dll ${FLATPAK_DEST}/bin
-      - install -Dm555 glide-init.exe ${FLATPAK_DEST}/bin
       - install -Dm555 installer ${FLATPAK_DEST}/bin
       - install -Dm555 starter ${FLATPAK_DEST}/bin
 
     sources:
-      - type: archive
+      - type: extra-data
         url: http://www.svenswrapper.de/gl32ogl14e.zip
         sha256: cd9d3688b35decf0fbd4c97d584577a7628e74aeac808f0a0a52fbcfdd1818c6
+        filename: glide.zip
+        size: 157116
 
       - type: script
         dest-filename: installer
@@ -30,8 +30,7 @@ modules:
           - if [ ! -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/glide-init.exe" ] ; then
           -     echo "installing glide"
           -     install -d "${WINEPREFIX}/drive_c/Program Files/Diablo II/"
-          -     install $(dirname $0)/glide3x.dll "${WINEPREFIX}/drive_c/Program Files/Diablo II/"
-          -     install $(dirname $0)/glide-init.exe "${WINEPREFIX}/drive_c/Program Files/Diablo II/"
+          -     unzip $(dirname $0)/../extra/glide.zip -d "${WINEPREFIX}/drive_c/Program Files/Diablo II/"
           - fi
 
       - type: script
