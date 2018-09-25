@@ -31,12 +31,19 @@ add-extensions:
     autodelete: false
     no-autodownload: true
 
+  com.blizzard.Diablo2.glide:
+    directory: extensions/glide
+    version: alfa
+    subdirectories: false
+    autodelete: false
+    no-autodownload: false
+
 modules:
   - name: diablo
     buildsystem: simple
     build-commands:
       - mkdir -p /app/bin
-      - install -Dm766 Downloader_Diablo2_enUS.exe /app/bin
+      - install -Dm555 Downloader_Diablo2_enUS.exe /app/bin
       
 
     sources:
@@ -48,31 +55,19 @@ modules:
     buildsystem: simple
     build-commands:
       - mkdir -p /app/bin
-      - install -Dm766 start /app/bin
-      - install -Dm766 installer /app/bin
-      - install -Dm766 tweaks /app/bin
-      - install -Dm644 glide3x.dll /app/bin
-      - install -Dm644 glide-init.exe /app/bin
+      - install -Dm555 start /app/bin
+      - install -Dm555 installer /app/bin
+      - install -Dm555 tweaks /app/bin
 
     sources:
-      - type: archive
-        url: http://www.svenswrapper.de/gl32ogl14e.zip
-        sha256: cd9d3688b35decf0fbd4c97d584577a7628e74aeac808f0a0a52fbcfdd1818c6
-
       - type: script
         dest-filename: installer
         commands:
           - mkdir -p $WINEPREFIX
           - wineboot
-          -
           - tweaks
-          - 
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v UseXRandR /d N /f
           -
-          - install -d "/var/data/win32/drive_c/Program Files/Diablo II/"
-          - install /app/bin/glide3x.dll "/var/data/win32/drive_c/Program Files/Diablo II/"
-          - install /app/bin/glide-init.exe "/var/data/win32/drive_c/Program Files/Diablo II/"
-          - wine /app/bin/Downloader_Diablo2_enUS.exe "$@"
+          - wine /app/bin/Downloader_Diablo2_enUS.exe
 
       - type: script
         dest-filename: tweaks
@@ -86,37 +81,36 @@ modules:
         commands:
           - #install diablo2
           - if ! [ -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II.exe" ] ; then
-          - '    echo "installing Diablo 2"'
-          - '    source /app/bin/installer'
-          - '    if [[ $? != 0 ]] ; then'
-          - '        echo "Installation failed, abort."'
-          - '        exit 1'
-          - '    fi'
-          - 'exit 0'
-          -
-          - #install diablo2 lod
-          - elif [ -e /app/extensions/lod/bin/installer ] && [ ! -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II LOD Install Log.html" ] ; then
-          - '         echo "installing Diablo 2 lod"'
-          - '         /app/extensions/lod/bin/installer "$@"'
-          - '         if [[ $? != 0 ]] ; then'
-          - '              echo "Installation failed, abort."'
-          - '              exit 1'
-          - '         fi'
-          - 'exit 0'
+          -     echo "installing Diablo 2"
+          -     source /app/bin/installer
+          -     if [[ $? != 0 ]]; then
+          -         echo "Installation failed, abort."
+          -         exit 1
+          -     fi
+          -     exit 0
           - fi
           -
-          - #launch
-          - # remove old files
-          - 'for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2-1.14b-Installer-*" ; do'
-          - '    rm -R $f'
-          - 'done'
-          - 'for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2LOD-1.14b-Installer-*" ; do'
-          - '    rm -R $f'
-          - 'done'
+          - #install extensions
+          - for f in /app/extensions/*/bin/installer ; do
+          -      test -f "$f" && "$f"
+          -      # close if installed
+          -      if [[ $? != 1 && $? != 0 ]]; then
+          -           echo "exited."
+          -           exit 1
+          -      fi
+          - done
           -
-          - 'echo "launching Diablo 2"'
-          - 'cd "/var/data/win32/drive_c/Program Files/Diablo II/"'
-          - 'wine "C:/Program Files/Diablo II/glide-init.exe"'
+          - # remove old files
+          - rm -Rf "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2-1.14b-Installer-*"
+          -
+          - # launch
+          - # start extensions
+          - for f in /app/extensions/*/bin/starter ; do
+          -      test -f "$f" && source "$f"
+          - done
+          -
+          - echo "launching Diablo 2"
+          - cd "/var/data/win32/drive_c/Program Files/Diablo II/"
           - 'wine "C:/Program Files/Diablo II/Diablo II.exe" -w $@'
 
   - name: resources
@@ -138,3 +132,4 @@ modules:
 
     post-install:
     - mkdir -p /app/extensions/lod
+    - mkdir -p /app/extensions/glide

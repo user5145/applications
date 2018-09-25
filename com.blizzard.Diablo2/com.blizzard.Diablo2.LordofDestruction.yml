@@ -16,15 +16,30 @@ modules:
       - install -d ${FLATPAK_DEST}/bin
       - install Diablo2lod.exe ${FLATPAK_DEST}/bin
       - install installer ${FLATPAK_DEST}/bin
+      - install starter ${FLATPAK_DEST}/bin
+
     sources:
       - type: file
         path: Downloader_Diablo2_Lord_of_Destruction_enUS.exe
         dest-filename: Diablo2lod.exe
+
       - type: script
         dest-filename: installer
         commands:
-          - wine $(dirname $0)/Diablo2lod.exe "$@"
+          - echo lod
+          - if [ ! -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II LOD Install Log.html" ] ; then
+          -     echo "installing Diablo 2 lod"
+          -     wine $(dirname $0)/Diablo2lod.exe
+          -
+          -     # force the script to stop
+          -     exit 255
+          - fi
 
+      - type: script
+        dest-filename: starter
+        commands:
+          - # remove old files
+          - rm -Rf ${WINEPREFIX}/drive_c/users/$USER/Desktop/D2LOD-1.14b-Installer-*
 
   - name: metainfo
     buildsystem: simple

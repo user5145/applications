@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="addon">
-    <id>com.blizzard.Diablo2.LordofDestruction</id>
+    <id>com.blizzard.Diablo2.glide</id>
     <extends>com.blizzard.Diablo2.desktop</extends>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>LicenseRef-proprietary</project_license>
-    <name>LordofDestruction</name>
-    <summary>Add LordofDestruction dlc to Diablo II</summary>
+    <name>glide</name>
+    <summary>Add glide wrapper to Diablo II</summary>
 </component>
