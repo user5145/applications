@@ -25,7 +25,7 @@ finish-args:
 
 add-extensions:
   com.blizzard.Diablo2.LordofDestruction:
-    directory: extensions
+    directory: extensions/lod
     version: alfa
     subdirectories: false
     autodelete: false
@@ -50,6 +50,7 @@ modules:
       - mkdir -p /app/bin
       - install -Dm766 start /app/bin
       - install -Dm766 installer /app/bin
+      - install -Dm766 tweaks /app/bin
       - install -Dm644 glide3x.dll /app/bin
       - install -Dm644 glide-init.exe /app/bin
 
@@ -63,11 +64,22 @@ modules:
         commands:
           - mkdir -p $WINEPREFIX
           - wineboot
+          -
+          - tweaks
           - 
+          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v UseXRandR /d N /f
+          -
           - install -d "/var/data/win32/drive_c/Program Files/Diablo II/"
           - install /app/bin/glide3x.dll "/var/data/win32/drive_c/Program Files/Diablo II/"
           - install /app/bin/glide-init.exe "/var/data/win32/drive_c/Program Files/Diablo II/"
           - wine /app/bin/Downloader_Diablo2_enUS.exe "$@"
+
+      - type: script
+        dest-filename: tweaks
+        commands:
+          - #tweaks
+          - #XRandr breaks movies when in fullscreen
+          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v UseXRandR /d N /f
 
       - type: script
         dest-filename: start
@@ -80,32 +92,32 @@ modules:
           - '        echo "Installation failed, abort."'
           - '        exit 1'
           - '    fi'
+          - 'exit 0'
           -
           - #install diablo2 lod
-          - elif [ -e /app/extensions/bin/installer ] && [ ! -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II LOD Install Log.html" ] ; then
+          - elif [ -e /app/extensions/lod/bin/installer ] && [ ! -e "${WINEPREFIX}/drive_c/Program Files/Diablo II/Diablo II LOD Install Log.html" ] ; then
           - '         echo "installing Diablo 2 lod"'
-          - '         /app/extensions/bin/installer "$@"'
+          - '         /app/extensions/lod/bin/installer "$@"'
           - '         if [[ $? != 0 ]] ; then'
           - '              echo "Installation failed, abort."'
           - '              exit 1'
           - '         fi'
+          - 'exit 0'
+          - fi
           -
           - #launch
-          - else
-          -      # remove old files
-          - '    for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2-1.14b-Installer-*" ; do'
-          - '         rm -R $f'
-          - '    done'
-          - '    for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2LOD-1.14b-Installer-*" ; do'
-          - '         rm -R $f'
-          - '    done'
+          - # remove old files
+          - 'for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2-1.14b-Installer-*" ; do'
+          - '    rm -R $f'
+          - 'done'
+          - 'for f in "${WINEPREFIX}/drive_c/users/$USER/Desktop/D2LOD-1.14b-Installer-*" ; do'
+          - '    rm -R $f'
+          - 'done'
           -
-          - '    echo "launching Diablo 2"'
-          -      cd "/var/data/win32/drive_c/Program Files/Diablo II/"
-          -      wine "C:/Program Files/Diablo II/glide-init.exe"
-          -      wine "C:/Program Files/Diablo II/Diablo II.exe" -3dfx
-          - fi
-
+          - 'echo "launching Diablo 2"'
+          - 'cd "/var/data/win32/drive_c/Program Files/Diablo II/"'
+          - 'wine "C:/Program Files/Diablo II/glide-init.exe"'
+          - 'wine "C:/Program Files/Diablo II/Diablo II.exe" -w $@'
 
   - name: resources
     buildsystem: simple
@@ -125,4 +137,4 @@ modules:
         path: com.blizzard.Diablo2.desktop
 
     post-install:
-    - mkdir -p /app/extensions
+    - mkdir -p /app/extensions/lod
