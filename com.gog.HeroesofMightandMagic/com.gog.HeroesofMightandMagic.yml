@@ -1,4 +1,4 @@
-app-id: com.gog.Heroes-of-Might-and-Magic
+app-id: com.gog.HeroesofMightandMagic
 branch: alfa
 
 runtime: org.winepak.Platform/i386
@@ -6,6 +6,14 @@ runtime-version: 3.0
 sdk: org.winepak.Sdk/i386
 
 command: start
+
+add-extensions:
+  com.gog.HeroesofMightandMagic.hd:
+    directory: extensions/hd
+    version: alfa
+    subdirectories: false
+    autodelete: false
+    no-autodownload: true
 
 tags:
 - proprietary
@@ -27,23 +35,22 @@ modules:
     buildsystem: simple
     build-commands:
       - mkdir -p /app/bin
-      - install -Dm766 setup_homm_3_complete_4.0_\(10665\).exe /app/bin/setup_homm_3_complete_4.0.exe
+      - install -Dm555 setup_homm_3_complete_4.0_\(10665\).exe /app/bin/setup_homm_3_complete_4.0.exe
 
     sources:
       - type: file
         path: setup_homm_3_complete_4.0_(10665).exe
-
 
   - name: scripts
     buildsystem: simple
     build-commands:
       - mkdir -p /app/bin
       - install -Dm555 start /app/bin
-      - install -Dm555 apply_extra /app/bin
+      - install -Dm555 installer /app/bin
 
     sources:
       - type: script
-        dest-filename: apply_extra
+        dest-filename: installer
         commands:
           - wineboot
           - 
@@ -66,30 +73,50 @@ modules:
         dest-filename: start
         commands:
           - if ! [ -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/Heroes3.exe" ] ; then
-          - '    source /app/bin/apply_extra'
+          - '    source /app/bin/installer'
           - '    if [[ $? != 0 ]] ; then'
           - '        echo "Installation failed, abort."'
           - '        exit 1'
           - '    fi'
-          - else
-          -      cd /var/data/win32/drive_c/GOG\ Games/HoMM\ 3\ Complete
-          -      wine "C:/GOG Games/HoMM 3 Complete/Heroes3.exe"
+          -      exit 0
           - fi
+          - 
+          - #install extensions
+          - for f in /app/extensions/*/bin/installer ; do
+          -      test -f "$f" && "$f"
+          -      # close if installed
+          -      if [[ $? != 1 && $? != 0 ]]; then
+          -           echo "exited."
+          -           exit 1
+          -      fi
+          - done
+          -
+          - # start extensions
+          - for f in /app/extensions/*/bin/starter ; do
+          -      test -f "$f" && source "$f"
+          - done
+          - 
+          -
+          - cd /var/data/win32/drive_c/GOG\ Games/HoMM\ 3\ Complete
+          - wine "C:/GOG Games/HoMM 3 Complete/Heroes3.exe"
 
 
   - name: resources
     buildsystem: simple
     build-commands:
-      - install -Dm644 "com.gog.Heroes-of-Might-and-Magic.png" /app/share/icons/hicolor/128x128/apps/com.gog.Heroes-of-Might-and-Magic.png
-      - install -Dm644 com.gog.Heroes-of-Might-and-Magic.appdata.xml /app/share/appdata/com.gog.Heroes-of-Might-and-Magic.appdata.xml
-      - install -Dm644 com.gog.Heroes-of-Might-and-Magic.desktop /app/share/applications/com.gog.Heroes-of-Might-and-Magic.desktop
+      - install -Dm644 com.gog.HeroesofMightandMagic.png /app/share/icons/hicolor/128x128/apps/com.gog.HeroesofMightandMagic.png
+      - install -Dm644 com.gog.HeroesofMightandMagic.appdata.xml /app/share/appdata/com.gog.HeroesofMightandMagic.appdata.xml
+      - install -Dm644 com.gog.HeroesofMightandMagic.desktop /app/share/applications/com.gog.HeroesofMightandMagic.desktop
 
     sources:
       - type: file
-        path: com.gog.Heroes-of-Might-and-Magic.appdata.xml
+        path: com.gog.HeroesofMightandMagic.appdata.xml
 
       - type: file
-        path: com.gog.Heroes-of-Might-and-Magic.desktop
+        path: com.gog.HeroesofMightandMagic.desktop
 
       - type: file
-        path: com.gog.Heroes-of-Might-and-Magic.png
+        path: com.gog.HeroesofMightandMagic.png
+
+    post-install:
+    - mkdir -p /app/extensions/hd

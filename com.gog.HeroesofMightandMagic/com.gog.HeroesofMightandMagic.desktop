@@ -2,7 +2,7 @@
 Name=Heroes of Might and Magic
 Comment=Game
 Exec=start %U
-Icon=com.gog.Heroes-of-Might-and-Magic
+Icon=com.gog.HeroesofMightandMagic
 StartupNotify=false
 Terminal=false
 Type=Application

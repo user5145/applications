@@ -1,0 +1,59 @@
+build-extension: true
+
+id: com.gog.HeroesofMightandMagic.hd
+branch: alfa
+
+runtime: com.gog.HeroesofMightandMagic//alfa
+sdk: org.winepak.Sdk/i386/3.0
+
+separate-locales: false
+appstream-compose: false
+
+modules:
+  - name: hd
+    buildsystem: simple
+    build-commands:      
+      - install -d ${FLATPAK_DEST}/bin
+      - install -Dm555 installer ${FLATPAK_DEST}/bin
+      - install -Dm555 starter ${FLATPAK_DEST}/bin
+
+    sources:
+      - type: extra-data
+        url: http://ih875403.vds.myihor.ru/HoMM3_HD_Latest_setup.exe
+        sha256: 0b5fa39582888f2cddc4db94c6bae8ecd1b7056fab9bdb9c7641d6b831fb56df
+        filename: hd_setup.exe
+        size: 12881483
+
+      - type: script
+        dest-filename: installer
+        commands:
+          - # check if game has been launched (by checking folder's size)
+          - if [[ ! -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]]; then
+          -     echo "installing hd mod."
+          -     install -d "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
+          -     install $(dirname $0)/../extra/hd_setup.exe "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
+          -     cd "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
+          -     wine "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe"
+          -     # return 2 when it's not installed, if installed close. It helps launch the game for the first time
+          -     if [[ $? != 2 ]] ; then
+          -         exit 255
+          -     fi
+          - fi
+
+      - type: script
+        dest-filename: starter
+        commands:
+          - if [[ -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]]; then
+          -      echo "hd mod enabled"
+          -      cd "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
+          -      wine "C:/GOG Games/HoMM 3 Complete/HD3_Launcher.exe"
+          -      exit 0
+          - fi
+
+  - name: metainfo
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 --target-directory=${FLATPAK_DEST}/share/metainfo com.gog.HeroesofMightandMagic.hd.metainfo.xml
+    sources:
+      - type: file
+        path: com.gog.HeroesofMightandMagic.hd.metainfo.xml
