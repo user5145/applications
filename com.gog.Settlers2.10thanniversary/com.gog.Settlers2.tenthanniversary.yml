@@ -22,6 +22,7 @@ finish-args:
   - --env=WINEPREFIX=/var/data/win32
   - --env=WINEARCH=win32
   - --env=WINEDEBUG=-all
+  - --persist=S2
 
 modules:
   - name: diablo
