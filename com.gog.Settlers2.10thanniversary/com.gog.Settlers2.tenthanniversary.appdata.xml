@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>com.gog.Settlers2.tenthanniversary.desktop</id>
+    <metadata_license>CC-BY-NC-ND-4.0</metadata_license>
+    <project_license>LicenseRef-proprietary</project_license>
+    <name>Settlers 2 10th Anniversary</name>
+    <summary>Game</summary>
+    <description><p>Game</p></description>
+    
+    <project_group>winepak</project_group>
+    <developer_name>GOG</developer_name>
+
+    <url type="homepage">https://gog.com</url>
+
+    <categories>
+        <category>Game</category>
+    </categories>
+
+    <recommends>
+        <memory>512</memory>
+    </recommends>
+
+    <releases>
+        <release date="2018-09-17" version="2018.09.17">
+            <description>
+                <ul>
+                    <li>Settlers 2</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
+</component>
