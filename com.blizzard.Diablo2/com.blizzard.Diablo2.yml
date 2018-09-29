@@ -73,8 +73,6 @@ modules:
         dest-filename: tweaks
         commands:
           - #tweaks
-          - #XRandr breaks movies when in fullscreen
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v UseXRandR /d N /f
 
       - type: script
         dest-filename: start
