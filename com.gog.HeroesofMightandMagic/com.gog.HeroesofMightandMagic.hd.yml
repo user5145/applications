@@ -20,18 +20,18 @@ modules:
     sources:
       - type: extra-data
         url: http://ih875403.vds.myihor.ru/HoMM3_HD_Latest_setup.exe
-        sha256: 0b5fa39582888f2cddc4db94c6bae8ecd1b7056fab9bdb9c7641d6b831fb56df
+        sha256: 36603c0882f98bd2b5b1718ee556df2960d1a5d6a24afe98063a7e6d31b03ef1
         filename: hd_setup.exe
-        size: 12881483
+        size: 12905127
 
       - type: script
         dest-filename: installer
         commands:
           - # check if game has been launched (by checking folder's size)
-          - if [[ ! -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]]; then
+          - if [[ ! -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]] || [[ $(dirname $0)/../extra/hd_setup.exe -nt "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe" ]] ; then
           -     echo "installing hd mod."
           -     install -d "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
-          -     install $(dirname $0)/../extra/hd_setup.exe "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
+          -     cp -rf $(dirname $0)/../extra/hd_setup.exe "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
           -     cd "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
           -     wine "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe"
           -     # return 2 when it's not installed, if installed close. It helps launch the game for the first time
