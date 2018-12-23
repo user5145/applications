@@ -86,8 +86,11 @@ modules:
         commands:
           - mkdir -p /var/data/win32
           - wineboot
-          - winetricks dotnet40
-          - winetricks gdiplus
+          - 
+          - # order user to wait
+          - winetricks dotnet40 | tee /tmp/dotnet.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing .net."
+          - winetricks gdiplus | tee /tmp/gdiplus.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing gdiplus."
+          - winetricks cjkfonts | tee /tmp/cjkfonts.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing fonts. Osu should start automatically."
           - 
           - install -Dm644 /app/discord-rpc.dll "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/discord-rpc.dll"
           - wine /app/bin/osu!install.exe "$@"
