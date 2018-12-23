@@ -19,6 +19,7 @@ finish-args:
   - --env=WINEARCH=win32
   - --env=WINEDEBUG=-all
   - --env=PATH=/app/wine/bin:/app/bin:/usr/bin
+  - --filesystem=home:ro
 
 build-options:
   cflags: -O2 -fstack-protector-strong
@@ -93,11 +94,12 @@ modules:
           - winetricks cjkfonts | tee /tmp/cjkfonts.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing fonts. Osu should start automatically."
           - 
           - install -Dm644 /app/discord-rpc.dll "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/discord-rpc.dll"
-          - wine /app/bin/osu!install.exe "$@"
+          - wine /app/bin/osu!install.exe
 
       - type: script
         dest-filename: start
         commands:
+          - # if osu doesn't exist then install
           - if ! [ -e "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/osu!.exe" ] ; then
           - '    source /app/bin/installer'
           - '    if [[ $? != 0 ]] ; then'
@@ -105,7 +107,12 @@ modules:
           - '        exit 1'
           - '    fi'
           - else
-          -      wine "C:/users/$USER/Local Settings/Application Data/osu!/osu!.exe"
+          -      # if arguments exist then let wine handle them, otherwise just launch osu
+          -      if [ $# == 0 ] ; then
+          -           wine "C:/users/$USER/Local Settings/Application Data/osu!/osu!.exe" 
+          -      else 
+          -           wine start /ProgIDOpen osu! "$@"
+          -      fi
           - fi
 
 
