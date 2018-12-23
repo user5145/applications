@@ -58,8 +58,8 @@ modules:
       - /app/wine/share/applications
     sources:
       - type: archive
-        url: https://dl.winehq.org/wine/source/3.0/wine-3.0.3.tar.xz
-        sha256: eb645999ea6f6455a5275bf267e19a32497c8f5aac818ea40afe7c8c396a4da1
+        url: https://dl.winehq.org/wine/source/3.x/wine-3.18.tar.xz
+        sha256: 9be8d44b1b22814c76e6214fe8ce657ae90a7a17879e5cd2b2a87ad6a1391a77
 
   - name: osu
     buildsystem: simple
@@ -70,7 +70,7 @@ modules:
     sources:
       - type: file
         url: https://m1.ppy.sh/r/osu!install.exe
-        sha256: db0b45baa5aef5ac2870802d26b1fcb0faf28d269dfdf3ba3a8392dabb4d377f
+        sha256: 9e21e5e6a2509b9eb49e8c73eba490cd0a07033094ab663983426d49078c3b64
 
 
   - name: scripts
