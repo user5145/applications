@@ -86,7 +86,7 @@ modules:
           - install -Dm644 /app/discord-rpc.dll "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/discord-rpc.dll"
           -
           - # use win8.1 for wintab api
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine' /v Vesion /d win81 /f
+          - wine reg add 'HKEY_CURRENT_USER\Software\Wine' /v Version /d win81 /f
           -
           - # osu installer complains about read only filesystem so we can copy it to /tmp
           - cp /app/extra/osu!install.exe /tmp
