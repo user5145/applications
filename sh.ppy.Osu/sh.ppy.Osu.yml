@@ -20,6 +20,7 @@ finish-args:
   - --env=WINEDEBUG=-all
   - --env=PATH=/app/wine/bin:/app/bin:/usr/bin
   - --filesystem=home:ro
+  - "--extra-data=osu!install.exe:cf55c1faa2aa808a16ef3753db61b66109c68a6bffae1ad2c492f74d15e2d70a:4156096:4156096:https://m1.ppy.sh/r/osu!install.exe"
 
 build-options:
   cflags: -O2 -fstack-protector-strong
@@ -62,17 +63,6 @@ modules:
         url: https://dl.winehq.org/wine/source/3.x/wine-3.18.tar.xz
         sha256: 9be8d44b1b22814c76e6214fe8ce657ae90a7a17879e5cd2b2a87ad6a1391a77
 
-  - name: osu
-    buildsystem: simple
-    build-commands:
-      - install -d /app/bin
-      - install osu!install.exe /app/bin
-
-    sources:
-      - type: file
-        url: https://m1.ppy.sh/r/osu!install.exe
-        sha256: 9e21e5e6a2509b9eb49e8c73eba490cd0a07033094ab663983426d49078c3b64
-
 
   - name: scripts
     buildsystem: simple
@@ -87,14 +77,17 @@ modules:
         commands:
           - mkdir -p /var/data/win32
           - wineboot
-          - 
+          -
           - # order user to wait
           - winetricks dotnet40 | tee /tmp/dotnet.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing .net."
           - winetricks gdiplus | tee /tmp/gdiplus.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing gdiplus."
           - winetricks cjkfonts | tee /tmp/cjkfonts.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing fonts. Osu should start automatically."
-          - 
+          -
           - install -Dm644 /app/discord-rpc.dll "${WINEPREFIX}/drive_c/users/$USER/Local Settings/Application Data/osu!/discord-rpc.dll"
-          - wine /app/bin/osu!install.exe
+          -
+          - # osu installer complains about read only filesystem so we can copy it to /tmp
+          - cp /app/extra/osu!install.exe /tmp
+          - wine /tmp/osu!install.exe
 
       - type: script
         dest-filename: start
@@ -109,8 +102,8 @@ modules:
           - else
           -      # if arguments exist then let wine handle them, otherwise just launch osu
           -      if [ $# == 0 ] ; then
-          -           wine "C:/users/$USER/Local Settings/Application Data/osu!/osu!.exe" 
-          -      else 
+          -           wine "C:/users/$USER/Local Settings/Application Data/osu!/osu!.exe"
+          -      else
           -           wine start /ProgIDOpen osu! "$@"
           -      fi
           - fi
@@ -133,7 +126,7 @@ modules:
 
       - type: file
         path: sh.ppy.Osu.desktop
-        
+
       - type: file
         url: https://github.com/goeo-/discord-rpc/releases/download/v3.2.0/linux-discord-rpc.dll
         sha256: 216bed4c3f79375a6389779b9087ed18d9dae95304362dd21bf9f406cf3e49eb
