@@ -27,7 +27,7 @@ modules:
       - type: script
         dest-filename: installer
         commands:
-          - # check if game has been launched (by checking folder's size)
+          - # check if game has been launched (by checking folder's files)
           - if [[ ! -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]] || [[ $(dirname $0)/../extra/hd_setup.exe -nt "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe" ]] ; then
           -     echo "installing hd mod."
           -     install -d "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
