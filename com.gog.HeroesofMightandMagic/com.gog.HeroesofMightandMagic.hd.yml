@@ -7,7 +7,6 @@ runtime: com.gog.HeroesofMightandMagic//alfa
 sdk: org.winepak.Sdk/i386/3.0
 
 separate-locales: false
-appstream-compose: false
 
 modules:
   - name: hd
@@ -20,9 +19,9 @@ modules:
     sources:
       - type: extra-data
         url: http://ih875403.vds.myihor.ru/HoMM3_HD_Latest_setup.exe
-        sha256: 36603c0882f98bd2b5b1718ee556df2960d1a5d6a24afe98063a7e6d31b03ef1
+        sha256: e78046e7333b4a0514f4273423b1f9abe00b2ab0b6d35e9de16941d7729a12f3
         filename: hd_setup.exe
-        size: 12905127
+        size: 13238940
 
       - type: script
         dest-filename: installer

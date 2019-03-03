@@ -31,15 +31,46 @@ finish-args:
   - --env=WINEDEBUG=-all
 
 modules:
+  - name: wine-staging-win32
+    config-opts:
+      - --disable-win64
+      - --disable-win16
+      - --disable-tests
+      - --with-x
+      - --with-ldap
+      - --with-netapi
+      - --without-cups
+      - --without-curses
+      - --without-capi
+      - --without-glu
+      - --without-gphoto
+      - --without-gsm
+      - --without-hal
+      - --without-opencl
+      - --without-pcap
+      - --without-udev
+    cleanup:
+      - /app/wine/app/wine/share/man
+      - /app/wine/share/applications
+    sources:
+      - type: archive
+        url: https://dl.winehq.org/wine/source/4.0/wine-4.0.tar.xz
+        sha256: 6736cdee95b2b8bb021ec0c19497ed8cad5ae2c8bfdb7ab5dc687ff92a480d4d
+
   - name: homm3
     buildsystem: simple
     build-commands:
+      - # after update 10.2018 doesnt work
       - mkdir -p /app/bin
-      - install -Dm555 setup_homm_3_complete_4.0_\(10665\).exe /app/bin/setup_homm_3_complete_4.0.exe
+      - install -Dm555 setup_heroes_of_might_and_magic_3_complete_4.0_\(3.2\)_\(25024\).exe /app/bin/setup_homm_3_complete_4.0.exe
+      - install -Dm555 setup_heroes_of_might_and_magic_3_complete_4.0_\(3.2\)_\(25024\)-1.bin /app/bin/setup_heroes_of_might_and_magic_3_complete_4.0_\(3.2\)_\(25024\)-1.bin
 
     sources:
       - type: file
-        path: setup_homm_3_complete_4.0_(10665).exe
+        path: setup_heroes_of_might_and_magic_3_complete_4.0_(3.2)_(25024).exe
+      - type: file
+        path: setup_heroes_of_might_and_magic_3_complete_4.0_(3.2)_(25024)-1.bin
+
 
   - name: scripts
     buildsystem: simple
