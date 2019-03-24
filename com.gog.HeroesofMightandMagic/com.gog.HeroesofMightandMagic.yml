@@ -26,6 +26,7 @@ finish-args:
   - --allow=multiarch
   - --device=all
   - --share=network
+  - --filesystem=home:ro
   - --env=WINEPREFIX=/var/data/win32
   - --env=WINEARCH=win32
   - --env=WINEDEBUG=-all
@@ -57,20 +58,6 @@ modules:
         url: https://dl.winehq.org/wine/source/4.0/wine-4.0.tar.xz
         sha256: 6736cdee95b2b8bb021ec0c19497ed8cad5ae2c8bfdb7ab5dc687ff92a480d4d
 
-  - name: homm3
-    buildsystem: simple
-    build-commands:
-      - # after update 10.2018 doesnt work
-      - mkdir -p /app/bin
-      - install -Dm555 setup_heroes_of_might_and_magic_3_complete_4.0_\(3.2\)_\(25024\).exe /app/bin/setup_homm_3_complete_4.0.exe
-      - install -Dm555 setup_heroes_of_might_and_magic_3_complete_4.0_\(3.2\)_\(25024\)-1.bin /app/bin/setup_heroes_of_might_and_magic_3_complete_4.0_\(3.2\)_\(25024\)-1.bin
-
-    sources:
-      - type: file
-        path: setup_heroes_of_might_and_magic_3_complete_4.0_(3.2)_(25024).exe
-      - type: file
-        path: setup_heroes_of_might_and_magic_3_complete_4.0_(3.2)_(25024)-1.bin
-
 
   - name: scripts
     buildsystem: simple
@@ -97,7 +84,9 @@ modules:
           -
           - echo "Installing the game"
           - install -dm 777 "/var/data/win32/drive_c/GOG Games/HoMM 3 Complete/random_maps"
-          - "wine /app/bin/setup_homm_3_complete_4.0.exe $@"
+          - 
+          - FILE="$(zenity --file-selection --title='Select a gogs homm3 installer')"
+          - wine "$FILE" "$@"
 
 
       - type: script
