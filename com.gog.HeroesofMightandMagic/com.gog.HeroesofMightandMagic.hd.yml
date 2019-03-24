@@ -7,6 +7,7 @@ runtime: com.gog.HeroesofMightandMagic//alfa
 sdk: org.winepak.Sdk/i386/3.0
 
 separate-locales: false
+appstream-compose: false
 
 modules:
   - name: hd
