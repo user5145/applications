@@ -20,7 +20,7 @@ finish-args:
   - --env=WINEDEBUG=-all
   - --env=PATH=/app/wine/bin:/app/bin:/usr/bin
   - --filesystem=home:ro
-  - "--extra-data=osu!install.exe:cf55c1faa2aa808a16ef3753db61b66109c68a6bffae1ad2c492f74d15e2d70a:4156096:4156096:https://m1.ppy.sh/r/osu!install.exe"
+  - "--extra-data=osu!install.exe:8a80d1ffa208c955ca716487e5373f952448d09c0d11b7cc5135baa6ae25a615:4180672:4180672:https://m1.ppy.sh/r/osu!install.exe"
 
 build-options:
   cflags: -O2 -fstack-protector-strong
