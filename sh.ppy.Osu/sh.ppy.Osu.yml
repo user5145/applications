@@ -37,7 +37,7 @@ modules:
       - mkdir -p /app/wine
 
 
-  - name: wine-staging-win32
+  - name: wine-win32
     config-opts:
       - --disable-win64
       - --disable-win16
