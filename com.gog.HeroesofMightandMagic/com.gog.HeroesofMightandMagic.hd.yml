@@ -20,9 +20,9 @@ modules:
     sources:
       - type: extra-data
         url: http://ih875403.vds.myihor.ru/HoMM3_HD_Latest_setup.exe
-        sha256: e78046e7333b4a0514f4273423b1f9abe00b2ab0b6d35e9de16941d7729a12f3
+        sha256: 1ebaea4060a361e4b9ac861881a313360080d329b37512675cd572875a641eef
         filename: hd_setup.exe
-        size: 13238940
+        size: 13237819
 
       - type: script
         dest-filename: installer
@@ -35,7 +35,7 @@ modules:
           -     cd "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
           -     
           -     # 2019.03 hd mod wants homm3 to be in Program files
-          -     ln -sf "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/" "${WINEPREFIX}/drive_c\Program Files\Heroes of Might and Magic III"
+          -     ln -sf "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/" "${WINEPREFIX}/drive_c/Program Files/Heroes of Might and Magic III"
           -     wine "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe"
           -     # return 2 when it's not installed, if installed close. It helps launch the game for the first time
           -     if [[ $? != 2 ]] ; then
