@@ -19,124 +19,110 @@ tags:
 - proprietary
 
 finish-args:
-  - --socket=x11
-  - --share=ipc
-  - --socket=pulseaudio
-  - --device=dri
-  - --allow=multiarch
-  - --device=all
-  - --share=network
-  - --filesystem=home:ro
-  - --env=WINEPREFIX=/var/data/win32
-  - --env=WINEARCH=win32
-  - --env=WINEDEBUG=-all
+- --socket=x11
+- --share=ipc
+- --socket=pulseaudio
+- --device=dri
+- --allow=multiarch
+- --device=all
+- --share=network
+- --filesystem=home:ro
+- --env=WINEPREFIX=/var/data/win32
+- --env=WINEARCH=win32
+- --env=WINEDEBUG=-all
+
+build-options:
+  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mfpmath=sse
+  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mfpmath=sse
+  ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
+  prefix: "/app"
+  libdir: "/app/lib"
 
 modules:
-  - name: wine-staging-win32
-    config-opts:
-      - --disable-win64
-      - --disable-win16
-      - --disable-tests
-      - --with-x
-      - --with-ldap
-      - --with-netapi
-      - --without-cups
-      - --without-curses
-      - --without-capi
-      - --without-glu
-      - --without-gphoto
-      - --without-gsm
-      - --without-hal
-      - --without-opencl
-      - --without-pcap
-      - --without-udev
-    cleanup:
-      - /app/wine/app/wine/share/man
-      - /app/wine/share/applications
-    sources:
-      - type: archive
-        url: https://dl.winehq.org/wine/source/4.0/wine-4.0.tar.xz
-        sha256: 6736cdee95b2b8bb021ec0c19497ed8cad5ae2c8bfdb7ab5dc687ff92a480d4d
+- "flatpak_wine_infrastructure_script/wine_infrastructure.yml"
 
+- name: wine-staging-win32
+  config-opts:
+  - --disable-win64
+  - --disable-win16
+  - --disable-tests
+  - --with-x
+  - --with-ldap
+  - --with-netapi
+  - --without-cups
+  - --without-curses
+  - --without-capi
+  - --without-glu
+  - --without-gphoto
+  - --without-gsm
+  - --without-hal
+  - --without-opencl
+  - --without-pcap
+  - --without-udev
+  cleanup:
+  - /app/wine/app/wine/share/man
+  - /app/wine/share/applications
+  sources:
+  - type: archive
+    url: https://dl.winehq.org/wine/source/4.0/wine-4.0.tar.xz
+    sha256: 6736cdee95b2b8bb021ec0c19497ed8cad5ae2c8bfdb7ab5dc687ff92a480d4d
 
-  - name: scripts
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/bin
-      - install -Dm555 start /app/bin
-      - install -Dm555 installer /app/bin
+- name: scripts
+  buildsystem: simple
+  build-commands:
+  - mkdir -p /app/bin
+  - install -Dm555 start /app/bin
+  - install -Dm555 installer /app/bin
 
-    sources:
-      - type: script
-        dest-filename: installer
-        commands:
-          - wineboot
-          - 
-          - echo "Performing tweak(s)..."
-          - echo "Disable MouseWarpOverride..."
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\DirectInput' /v MouseWarpOverride /d disable /f
-          - 
-          - echo "Disable GrabPointer"
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabFullScreen /d N /f
-          -
-          - echo "Disable GrabPointer"
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabPointer /d N /f
-          -
-          - echo "Installing the game"
-          - install -dm 777 "/var/data/win32/drive_c/GOG Games/HoMM 3 Complete/random_maps"
-          - 
-          - FILE="$(zenity --file-selection --title='Select a gogs homm3 installer')"
-          - wine "$FILE" "$@"
+  sources:
+  - type: script
+    dest-filename: installer
+    commands:
+    - wineboot
+    -
+    - echo "Performing tweak(s)..."
+    - echo "Disable MouseWarpOverride..."
+    - wine reg add 'HKEY_CURRENT_USER\Software\Wine\DirectInput' /v MouseWarpOverride /d disable /f
+    -
+    - echo "Disable GrabPointer"
+    - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabFullScreen /d N /f
+    -
+    - echo "Disable GrabPointer"
+    - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabPointer /d N /f
+    -
+    - echo "Installing the game"
+    - install -dm 777 "/var/data/win32/drive_c/GOG Games/HoMM 3 Complete/random_maps"
+    -
+    - FILE="$(zenity --file-selection --title='Select a gogs homm3 installer')"
+    - wine "$FILE" "$@"
+    - echo "Installation completed"
+    - exit 0
 
+  - type: script
+    dest-filename: start
+    commands:
+    - source setup_infrastructure.sh "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/Heroes3.exe" "/app/bin/installer" "/app/extensions/*/bin/installer" "/app/extensions/*/bin/starter"
+    -
+    - echo "Starting..."
+    - cd /var/data/win32/drive_c/GOG\ Games/HoMM\ 3\ Complete
+    - wine "C:/GOG Games/HoMM 3 Complete/Heroes3.exe"
 
-      - type: script
-        dest-filename: start
-        commands:
-          - if ! [ -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/Heroes3.exe" ] ; then
-          - '    source /app/bin/installer'
-          - '    if [[ $? != 0 ]] ; then'
-          - '        echo "Installation failed, abort."'
-          - '        exit 1'
-          - '    fi'
-          -      exit 0
-          - fi
-          - 
-          - #install extensions
-          - for f in /app/extensions/*/bin/installer ; do
-          -      test -f "$f" && "$f"
-          -      # close if installed
-          -      if [[ $? != 1 && $? != 0 ]]; then
-          -           echo "exited."
-          -           exit 1
-          -      fi
-          - done
-          -
-          - # start extensions
-          - for f in /app/extensions/*/bin/starter ; do
-          -      test -f "$f" && source "$f"
-          - done
-          - 
-          -
-          - cd /var/data/win32/drive_c/GOG\ Games/HoMM\ 3\ Complete
-          - wine "C:/GOG Games/HoMM 3 Complete/Heroes3.exe"
+- name: resources
+  buildsystem: simple
+  build-commands:
+  - install -Dm644 com.gog.HeroesofMightandMagic.png /app/share/icons/hicolor/128x128/apps/com.gog.HeroesofMightandMagic.png
+  - install -Dm644 com.gog.HeroesofMightandMagic.appdata.xml /app/share/appdata/com.gog.HeroesofMightandMagic.appdata.xml
+  - install -Dm644 com.gog.HeroesofMightandMagic.desktop /app/share/applications/com.gog.HeroesofMightandMagic.desktop
 
+  sources:
+  - type: file
+    path: com.gog.HeroesofMightandMagic.appdata.xml
+  - type: file
+    path: com.gog.HeroesofMightandMagic.desktop
+  - type: file
+    path: com.gog.HeroesofMightandMagic.png
 
-  - name: resources
-    buildsystem: simple
-    build-commands:
-      - install -Dm644 com.gog.HeroesofMightandMagic.png /app/share/icons/hicolor/128x128/apps/com.gog.HeroesofMightandMagic.png
-      - install -Dm644 com.gog.HeroesofMightandMagic.appdata.xml /app/share/appdata/com.gog.HeroesofMightandMagic.appdata.xml
-      - install -Dm644 com.gog.HeroesofMightandMagic.desktop /app/share/applications/com.gog.HeroesofMightandMagic.desktop
-
-    sources:
-      - type: file
-        path: com.gog.HeroesofMightandMagic.appdata.xml
-
-      - type: file
-        path: com.gog.HeroesofMightandMagic.desktop
-
-      - type: file
-        path: com.gog.HeroesofMightandMagic.png
-
-    post-install:
-    - mkdir -p /app/extensions/hd
+- name: extensions
+  buildsystem: simple
+  build-commands:
+  - mkdir -p /app/extensions/hd
