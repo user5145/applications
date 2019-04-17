@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<component type="addon">
-    <id>com.gog.HeroesofMightandMagic</id>
-    <extends>com.gog.Heroes-of-Might-and-Magic.desktop</extends>
-    <metadata_license>CC0-1.0</metadata_license>
-    <project_license>LicenseRef-proprietary</project_license>
-    <name>glide</name>
-    <summary>hd mod for homm3</summary>
-</component>

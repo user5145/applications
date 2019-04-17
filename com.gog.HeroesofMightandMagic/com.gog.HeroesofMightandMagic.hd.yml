@@ -37,8 +37,8 @@ modules:
     -     # 2019.03 hd mod wants homm3 to be in Program files
     -     ln -sf "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/" "${WINEPREFIX}/drive_c/Program Files/Heroes of Might and Magic III"
     -     wine "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe"
-    -     # returns 2 when it's installed. It helps launch the game for the first time
-    -     if [[ $? == 2 ]] ; then
+    -     # returns 2 if it's installed. It helps launch the game for the first time
+    -     if [[ $? != 2 ]] ; then
     -         exit 2
     -     fi
     - fi
@@ -52,11 +52,3 @@ modules:
     -      wine "C:/GOG Games/HoMM 3 Complete/HD3_Launcher.exe"
     -      exit 0
     - fi
-
-- name: metainfo
-  buildsystem: simple
-  build-commands:
-  - install -Dm644 --target-directory=${FLATPAK_DEST}/share/metainfo com.gog.HeroesofMightandMagic.hd.metainfo.xml
-  sources:
-  - type: file
-    path: com.gog.HeroesofMightandMagic.hd.metainfo.xml
