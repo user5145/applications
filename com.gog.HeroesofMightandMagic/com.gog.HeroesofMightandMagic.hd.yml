@@ -25,19 +25,21 @@ modules:
   - type: script
     dest-filename: installer
     commands:
+    - DIRECTORY=$(dirname $_)
+    -
     - # check if game has been installed (by checking folder's files)
-    - if [[ ! -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]] || [[ $(dirname $0)/../extra/hd_setup.exe -nt "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe" ]] ; then
+    - if [[ ! -e "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/HD3_Launcher.exe" ]] || [[ "$DIRECTORY/../extra/hd_setup.exe" -nt "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe" ]] ; then
     -     echo "installing hd mod."
     -     install -d "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
-    -     cp -rf $(dirname $0)/../extra/hd_setup.exe "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
+    -     cp -rf "$DIRECTORY/../extra/hd_setup.exe" "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
     -     cd "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/"
     -
     -     # 2019.03 hd mod wants homm3 to be in Program files
     -     ln -sf "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/" "${WINEPREFIX}/drive_c/Program Files/Heroes of Might and Magic III"
     -     wine "${WINEPREFIX}/drive_c/GOG Games/HoMM 3 Complete/hd_setup.exe"
-    -     # return 2 when it's not installed, if installed close. It helps launch the game for the first time
-    -     if [[ $? != 2 ]] ; then
-    -         exit 255
+    -     # returns 2 when it's installed. It helps launch the game for the first time
+    -     if [[ $? == 2 ]] ; then
+    -         exit 2
     -     fi
     - fi
 
