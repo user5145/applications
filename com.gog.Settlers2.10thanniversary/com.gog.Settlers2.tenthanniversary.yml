@@ -11,88 +11,71 @@ tags:
 - proprietary
 
 finish-args:
-  - --socket=x11
-  - --share=ipc
-  - --socket=pulseaudio
-  - --device=dri
-  - --allow=multiarch
-  - --device=all
-  - --share=network
-  - --persist=xdg-desktop
-  - --env=WINEPREFIX=/var/data/win32
-  - --env=WINEARCH=win32
-  - --env=WINEDEBUG=-all
-  - --persist=S2
+- --socket=x11
+- --share=ipc
+- --socket=pulseaudio
+- --device=dri
+- --allow=multiarch
+- --device=all
+- --share=network
+- --persist=xdg-desktop
+- --env=WINEPREFIX=/var/data/win32
+- --env=WINEARCH=win32
+- --env=WINEDEBUG=-all
+- --filesystem=home:ro
+- --persist=S2
 
 modules:
-  - name: diablo
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/bin
-      - install -Dm555 setup_settlers_2_10th_anniversary_2.0.0.8.exe /app/bin
+- "flatpak_wine_infrastructure_script/wine_infrastructure.yml"
 
-    sources:
-      - type: file
-        path: setup_settlers_2_10th_anniversary_2.0.0.8.exe
+- name: setup
+  buildsystem: simple
+  build-commands:
+  - mkdir -p /app/bin
+  - install -Dm555 start /app/bin
+  - install -Dm555 installer /app/bin
 
+  sources:
+  - type: script
+    dest-filename: installer
+    commands:
+    - mkdir -p $WINEPREFIX
+    - wineboot
+    - winetricks d3dx9
+    - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabFullScreen /d N /f
+    -
+    - FILE="$(zenity --file-selection --title='Select a gogs settlers 2 10th anniversary installer')"
+    - wine $FILE
+    - exit 0
 
-  - name: setup
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/bin
-      - install -Dm555 start /app/bin
-      - install -Dm555 installer /app/bin
-      - install -Dm555 tweaks /app/bin
+  - type: script
+    dest-filename: start
+    commands:
+    - #install
+    - if ! [ -e "${WINEPREFIX}/drive_c/GOG Games/The Settlers II - 10th Anniversary/Settlers2Serial.exe" ] ; then
+    -     echo "installing Settlers 2"
+    -     source /app/bin/installer
+    -     if [[ $? != 0 ]]; then
+    -         echo "Installation failed, abort."
+    -         exit 1
+    -     fi
+    -     exit 0
+    - fi
+    -
+    - echo "launching Settlers 2"
+    - cd "/var/data/win32/drive_c/GOG Games/The Settlers II - 10th Anniversary"
+    - wine "C:/GOG Games/The Settlers II - 10th Anniversary/bin/S2DNG.exe" "$@"
 
-    sources:
-      - type: script
-        dest-filename: installer
-        commands:
-          - mkdir -p $WINEPREFIX
-          - wineboot
-          - winetricks d3dx9
-          - tweaks
-          -
-          - wine /app/bin/setup_settlers_2_10th_anniversary_2.0.0.8.exe
-
-      - type: script
-        dest-filename: tweaks
-        commands:
-          - #tweaks
-          - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabFullScreen /d N /f
-
-      - type: script
-        dest-filename: start
-        commands:
-          - #install
-          - if ! [ -e "${WINEPREFIX}/drive_c/GOG Games/The Settlers II - 10th Anniversary/Settlers2Serial.exe" ] ; then
-          -     echo "installing Settlers 2"
-          -     source /app/bin/installer
-          -     if [[ $? != 0 ]]; then
-          -         echo "Installation failed, abort."
-          -         exit 1
-          -     fi
-          -     exit 0
-          - fi
-          -
-          - echo "launching Settlers 2"
-          - cd "/var/data/win32/drive_c/GOG Games/The Settlers II - 10th Anniversary"
-          - 'wine "C:/GOG Games/The Settlers II - 10th Anniversary/bin/S2DNG.exe" $@'
-
-
-  - name: resources
-    buildsystem: simple
-    build-commands:
-      - install -Dm644 com.gog.Settlers2.tenthanniversary.png /app/share/icons/hicolor/128x128/apps/com.gog.Settlers2.tenthanniversary.png
-      - install -Dm644 com.gog.Settlers2.tenthanniversary.appdata.xml /app/share/appdata/com.gog.Settlers2.tenthanniversary.appdata.xml
-      - install -Dm644 com.gog.Settlers2.tenthanniversary.desktop /app/share/applications/com.gog.Settlers2.tenthanniversary.desktop
-
-    sources:
-      - type: file
-        path: com.gog.Settlers2.tenthanniversary.appdata.xml
-
-      - type: file
-        path: com.gog.Settlers2.tenthanniversary.desktop
-
-      - type: file
-        path: com.gog.Settlers2.tenthanniversary.png
+- name: resources
+  buildsystem: simple
+  build-commands:
+  - install -Dm644 com.gog.Settlers2.tenthanniversary.png /app/share/icons/hicolor/128x128/apps/com.gog.Settlers2.tenthanniversary.png
+  - install -Dm644 com.gog.Settlers2.tenthanniversary.appdata.xml /app/share/appdata/com.gog.Settlers2.tenthanniversary.appdata.xml
+  - install -Dm644 com.gog.Settlers2.tenthanniversary.desktop /app/share/applications/com.gog.Settlers2.tenthanniversary.desktop
+  sources:
+  - type: file
+    path: com.gog.Settlers2.tenthanniversary.appdata.xml
+  - type: file
+    path: com.gog.Settlers2.tenthanniversary.desktop
+  - type: file
+    path: com.gog.Settlers2.tenthanniversary.png

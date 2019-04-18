@@ -1,0 +1,3 @@
+[submodule "com.gog.Settlers2.10thanniversary/flatpak_wine_infrastructure_script"]
+	path = com.gog.Settlers2.10thanniversary/flatpak_wine_infrastructure_script
+	url = https://github.com/user5145/flatpak_wine_infrastructure_script.git
