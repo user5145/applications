@@ -25,6 +25,13 @@ finish-args:
 - --filesystem=home:ro
 - --persist=S2
 
+build-options:
+  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mfpmath=sse
+  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mfpmath=sse
+  ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
+  prefix: "/app"
+  libdir: "/app/lib"
+
 modules:
 - "flatpak_wine_infrastructure_script/wine_infrastructure.yml"
 
@@ -41,26 +48,18 @@ modules:
     commands:
     - mkdir -p $WINEPREFIX
     - wineboot
-    - winetricks d3dx9
+    - winetricks d3dx9 | tee /tmp/dotnet.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing directx 9."
     - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabFullScreen /d N /f
     -
     - FILE="$(zenity --file-selection --title='Select a gogs settlers 2 10th anniversary installer')"
-    - wine $FILE
+    - wine "$FILE"
     - exit 0
 
   - type: script
     dest-filename: start
     commands:
     - #install
-    - if ! [ -e "${WINEPREFIX}/drive_c/GOG Games/The Settlers II - 10th Anniversary/Settlers2Serial.exe" ] ; then
-    -     echo "installing Settlers 2"
-    -     source /app/bin/installer
-    -     if [[ $? != 0 ]]; then
-    -         echo "Installation failed, abort."
-    -         exit 1
-    -     fi
-    -     exit 0
-    - fi
+    - source setup_infrastructure.sh "${WINEPREFIX}/drive_c/GOG Games/The Settlers II - 10th Anniversary/Settlers2Serial.exe" "/app/bin/installer" "/app/extensions/*/bin/installer" "/app/extensions/*/bin/starter"
     -
     - echo "launching Settlers 2"
     - cd "/var/data/win32/drive_c/GOG Games/The Settlers II - 10th Anniversary"
