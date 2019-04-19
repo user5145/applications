@@ -74,7 +74,7 @@ modules:
     - wineboot
     -
     - # order user to wait
-    - winetricks dotnet40 | tee /tmp/dotnet.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing .net."
+    - winetricks dotnet452 | tee /tmp/dotnet.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing .net. When asked about restart click whatever. Please ignore windows update service bullshit message and click continue"
     - winetricks gdiplus | tee /tmp/gdiplus.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing gdiplus."
     - winetricks cjkfonts | tee /tmp/cjkfonts.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing fonts. Osu should start automatically."
     -
