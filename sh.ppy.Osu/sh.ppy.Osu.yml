@@ -57,8 +57,8 @@ modules:
   - /app/wine/share/applications
   sources:
   - type: archive
-    url: https://dl.winehq.org/wine/source/3.x/wine-3.18.tar.xz
-    sha256: 9be8d44b1b22814c76e6214fe8ce657ae90a7a17879e5cd2b2a87ad6a1391a77
+    url: https://dl.winehq.org/wine/source/4.x/wine-4.6.tar.xz
+    sha256: 329001f924d3f825121a1b28cae8e36515405f2a1d22bc266897d3d926b562da
 
 - name: scripts
   buildsystem: simple
