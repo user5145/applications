@@ -23,12 +23,10 @@ finish-args:
   - "--extra-data=osu!install.exe:a5682d6f8262f248595320b727bda5f11af593122ed1cb7229f299f0623dff0a:4188864:4188864:https://m1.ppy.sh/r/osu!install.exe"
 
 build-options:
-  cflags: -O2 -fstack-protector-strong
-  cxxflags: -O2 -fstack-protector-strong
+  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
+  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
   ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
   prefix: "/app/wine"
-  env:
-    V: '1'
 
 modules:
 - name: setup-wine
