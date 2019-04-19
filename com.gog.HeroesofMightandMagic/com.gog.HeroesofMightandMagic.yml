@@ -41,7 +41,7 @@ build-options:
 modules:
 - "flatpak_wine_infrastructure_script/wine_infrastructure.yml"
 
-- name: wine-staging-win32
+- name: wine-win32
   config-opts:
   - --disable-win64
   - --disable-win16
