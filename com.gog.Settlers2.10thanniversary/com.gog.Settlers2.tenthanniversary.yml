@@ -18,11 +18,12 @@ finish-args:
 - --allow=multiarch
 - --device=all
 - --share=network
-- --persist=xdg-desktop
 - --env=WINEPREFIX=/var/data/win32
 - --env=WINEARCH=win32
 - --env=WINEDEBUG=-all
-- --filesystem=home:ro
+- --filesystem=/run/media:ro
+- --filesystem=/mnt:ro
+- --filesystem=home
 - --persist=S2
 
 build-options:
@@ -51,6 +52,7 @@ modules:
     - winetricks d3dx9 | tee /tmp/dotnet.log | zenity --progress --pulsate --auto-close --auto-kill --no-cancel --text="Installing directx 9."
     - wine reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' /v GrabFullScreen /d N /f
     -
+    - zenity --info --title="Settlers 2" --text "Please install in the default location"
     - FILE="$(zenity --file-selection --title='Select a gogs settlers 2 10th anniversary installer')"
     - wine "$FILE"
     - exit 0
