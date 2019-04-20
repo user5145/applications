@@ -59,7 +59,7 @@ modules:
     dest-filename: start
     commands:
     - #install
-    - source setup_infrastructure.sh "${WINEPREFIX}/drive_c/GOG Games/The Settlers II - 10th Anniversary/Settlers2Serial.exe" "/app/bin/installer" "/app/extensions/*/bin/installer" "/app/extensions/*/bin/starter"
+    - source setup_infrastructure.sh -e "/app/extensions/*/bin/installer" -s "/app/extensions/*/bin/starter" "${WINEPREFIX}/drive_c/GOG Games/The Settlers II - 10th Anniversary/Settlers2Serial.exe" "/app/bin/installer"
     -
     - echo "launching Settlers 2"
     - cd "/var/data/win32/drive_c/GOG Games/The Settlers II - 10th Anniversary"
