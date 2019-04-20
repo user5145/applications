@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Path of Building
 Comment=pob
-Exec=start %U
+Exec=start.sh %U
 Icon=org.openarl.PathofBuilding
 StartupNotify=true
 Terminal=false
