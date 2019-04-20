@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Path of Building
+Comment=pob
+Exec=start %U
+Icon=org.openarl.PathofBuilding
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;
+Categories=
+Keywords=Strategy;

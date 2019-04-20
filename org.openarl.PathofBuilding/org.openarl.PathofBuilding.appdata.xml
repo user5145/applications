@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>org.openarl.PathofBuilding.desktop</id>
+    <metadata_license>CC-BY-NC-ND-4.0</metadata_license>
+    <project_license>LicenseRef-proprietary</project_license>
+    <name>Path of Building</name>
+    <summary>App</summary>
+    <description><p>App</p></description>
+    
+    <project_group>winepak</project_group>
+    <developer_name>openarl</developer_name>
+
+    <url type="homepage">https://github.com/Openarl/PathOfBuilding/</url>
+
+    <categories>
+        <category>Game</category>
+    </categories>
+
+    <recommends>
+        <memory>512</memory>
+    </recommends>
+
+    <releases>
+        <release date="2019-01-01" version="2019-01-01">
+            <description>
+                <ul>
+                    <li>org.openarl.PathofBuilding</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
+</component>
