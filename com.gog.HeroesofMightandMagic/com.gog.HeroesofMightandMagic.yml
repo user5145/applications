@@ -93,7 +93,7 @@ modules:
     - echo "Installing the game"
     - install -dm 777 "/var/data/win32/drive_c/GOG Games/HoMM 3 Complete/random_maps"
     -
-    - FILE="$(zenity --file-selection --title='Select a gogs homm3 installer')"
+    - FILE="$(zenity --file-selection --title='Select gogs homm3 installer')"
     - wine "$FILE" "$@"
     - echo "Installation completed"
     - exit 0
