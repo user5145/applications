@@ -2,7 +2,6 @@
 
 | Arch  | Installs | Runs | Notes |
 | ----- | -------- | ---- | ----- |
-| x86   | Yes      | Yes  |       |
 | x86_64| Yes      | Yes  |       |
 
 ## Build & Install
